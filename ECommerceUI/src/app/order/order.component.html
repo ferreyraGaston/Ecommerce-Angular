@@ -1,0 +1,87 @@
+<div class="my-container mx-auto">
+
+    <section class="m-3 p-4 border border-dark my-rounded-corner">
+        <h4 class="w-25 border border-secondary text-center py-2 my-rounded-corner">Información de pago</h4>
+        <table class="table w-50 mx-auto table-bordered table-hover my-shadow">
+            <tbody>
+                <tr>
+                    <td>Articulos totales</td>
+                    <td class="fs-5 fw-bold">{{usersCart.cartItems.length}}</td>
+                </tr>
+                <tr>
+                    <td>Precio total</td>
+                    <td class="fs-5 fw-bold text-danger"> {{usersPaymentInfo.totalAmount}} </td>
+                </tr>
+                <tr>
+                    <td>Gastos de envío</td>
+                    <td class="fs-5 fw-bold text-danger">{{usersPaymentInfo.shipingCharges}}</td>
+                </tr>
+                <tr>
+                    <td>Descuento</td>
+                    <td class="fs-5 fw-bold text-success">{{usersPaymentInfo.amountReduced}}</td>
+                </tr>
+                <tr>
+                    <td>Tienes que pagar</td>
+                    <td class="fs-5 fw-bold text-success">{{usersPaymentInfo.amountPaid}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="m-3 p-4 border border-dark my-rounded-corner">
+        <h4 class="w-25 border border-secondary text-center py-2 my-rounded-corner">Método de pago</h4>
+        <div class="d-flex justify-content-center align-items-center">
+            <h5 class="me-4">Seleccione cualquier método</h5>
+            <select class="form-select w-25" [formControl]="selectedPaymentMethod">
+                <option value="0">Abrir este menú de selección</option>
+                <option *ngFor="let paymentMethod of paymentMethods" value="{{paymentMethod.id}}">
+                    {{paymentMethod.type}}
+                    <span *ngIf="paymentMethod.provider !== ''">{{" - "+paymentMethod.provider}}</span>
+                </option>
+            </select>
+        </div>
+    </section>
+
+    <section class="m-3 p-4 border border-dark my-rounded-corner">
+        <h4 class="w-25 border border-secondary text-center py-2 my-rounded-corner">Proceder a los pagos</h4>
+        <div class="mt-4 w-50" *ngIf="selectedPaymentMethodName !== ''">
+            <table class="table table-bordered my-shadow">
+                <thead>
+                    <tr>
+                        <td>Tienes que pagar</td>
+                        <td> {{usersPaymentInfo.amountPaid}} </td>
+                    </tr>
+                    <tr>
+                        <td>Método de pago</td>
+                        <td> {{this.getPaymentMethod(selectedPaymentMethodName)}} </td>
+                    </tr>
+                    <tr>
+                        <td>Dirección</td>
+                        <td *ngIf="true"> {{address}} </td>
+                    </tr>
+                    <tr>
+                        <td>Número de teléfono móvil</td>
+                        <td *ngIf="true"> {{mobileNumber}} </td>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="d-grid w-50">
+                <button type="button" class="btn btn-outline-success mb-4" (click)="placeOrder()">
+                  Pagar
+                </button>
+            </div>
+
+            <div class="processing">
+                <div class="spinner-border me-4" role="status" *ngIf="displaySpinner">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <h6 class="m-0" [ngClass]="classname"> {{message}} </h6>
+            </div>
+        </div>
+    </section>
+
+    <div *ngIf="!false" class="pt-4">
+        <h2>No has iniciado sesión</h2>
+    </div>
+</div>
